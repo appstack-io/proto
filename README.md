@@ -1,1 +1,1 @@
-# proto
+# @appstack-io/proto
