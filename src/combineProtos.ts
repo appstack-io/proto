@@ -19,8 +19,11 @@ const findProtoFiles = (dir: string, fileList: string[] = []): string[] => {
   return fileList.filter((file) => !file.includes('combined.proto'));
 };
 
-export function combineProtos(source: string, target: string) {
-  const protoFiles: string[] = findProtoFiles(source);
+export function combineProtos(sources: string[], target: string) {
+  const protoFiles: string[] = sources.reduce((acc, val) => {
+    acc.push(...findProtoFiles(val));
+    return acc;
+  }, []);
 
   let combinedContent = '';
   const importStatements: Set<string> = new Set();
