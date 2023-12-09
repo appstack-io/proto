@@ -8,10 +8,10 @@ export async function generateServiceProtos(dir: string) {
     .map((file) => `${dir}/${file}`);
   for (const file of moduleFiles) {
     const clss = await import(file);
-    const imports = clss['getImports'] ? clss.getImports() : null;
+    const imports = clss['imports'] ? clss.imports : null;
     if (!imports) continue;
     const sourceDirs = imports
-      .map((imp) => (imp['getDirname'] ? imp['getDirname']() : null))
+      .map((imp) => (imp['__dirname'] ? imp['__dirname'] : null))
       .filter((i) => i);
     combineProtos(sourceDirs, `${file}.proto`);
   }
