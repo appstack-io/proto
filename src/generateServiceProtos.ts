@@ -11,7 +11,7 @@ export async function generateServiceProtos(dir: string) {
     const imports = clss['imports'] ? clss.imports : null;
     if (!imports) continue;
     const sourceDirs = imports
-      .map((imp) => (imp['__dirname'] ? imp['__dirname'] : null))
+      .map((imp) => (imp['getDirname'] ? imp['getDirname']() : null))
       .filter((i) => i);
     combineProtos(sourceDirs, `${file}.proto`);
   }
