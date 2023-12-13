@@ -48,7 +48,8 @@ export function consolidateProtos(protoStr: string): string {
   for (const blockType in blocks) {
     for (const blockName in blocks[blockType]) {
       result += `${blockType} ${blockName} {\n`;
-      result += blocks[blockType][blockName].join('\n') + '\n';
+      result +=
+        Array.from(new Set(blocks[blockType][blockName])).join('\n') + '\n';
       result += '}\n\n';
     }
   }

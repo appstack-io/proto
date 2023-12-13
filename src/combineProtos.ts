@@ -16,7 +16,7 @@ const findProtoFiles = (dir: string, fileList: string[] = []): string[] => {
     }
   });
 
-  return fileList.filter((file) => !file.includes('combined.proto'));
+  return fileList.filter((file) => !file.includes('/tests/'));
 };
 
 export function combineProtos(sources: string[], target: string) {
