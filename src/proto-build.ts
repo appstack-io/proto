@@ -3,6 +3,7 @@ import { combineProtos } from './combine-protos';
 import { generateGrpcClient } from './generate-grpc-client';
 import { generateInterfaces } from './generate-interfaces';
 import { generateClient } from './generate-client';
+import { exec } from 'child_process';
 
 export async function protoBuild(opts: {
   projectDir: string;
@@ -43,4 +44,6 @@ export async function protoBuild(opts: {
     `${opts.projectDir}/${opts.protoDir}/${opts.combinedName}.grpc.client.ts`,
     `${opts.projectDir}/${opts.protoDir}/${opts.clientDir}`,
   );
+
+  exec(`cp -r ${__dirname}/google ${opts.projectDir}/${opts.protoDir}`);
 }

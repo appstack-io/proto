@@ -152,7 +152,7 @@ export async function postToUnary<T>(
     },
   });
 
-  exec(`cp -r ${fsPath.dirname(sourceTs)}/google ${targetDir}`);
+  exec(`cp -r ${__dirname}/google ${targetDir}`);
   exec(`cp ${sourceTs} ${targetDir}`);
 
   // Generate the index file
