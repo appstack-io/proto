@@ -7,9 +7,10 @@ describe('generate-grpc-client', () => {
     const combined = combineProtos([`${__dirname}/protos`], []);
     fs.writeFileSync(`${__dirname}/temp/combined.proto`, combined, 'utf-8');
     await generateGrpcClient(
+      `./node_modules`,
       `src/tests/temp`,
       `combined.proto`,
-      `combined.grpc.ts`,
+      `combined.grpc.client.ts`,
     );
   });
 });

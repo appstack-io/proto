@@ -1,0 +1,47 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`generate-interfaces basic 1`] = `
+"import { Empty } from './google/protobuf/empty';
+
+import { Observable } from 'rxjs';
+
+export interface Test1 {
+  id: string;
+  createdAt: number;
+  updatedAt: number;
+  text: string;
+  isPublic: boolean;
+}
+
+export interface Test1CreateOneInput {
+  text: string;
+}
+
+export interface Test2 {
+  id: string;
+  createdAt: number;
+  updatedAt: number;
+  text: string;
+  isPublic: boolean;
+}
+
+export interface Test2CreateOneInput {
+  text: string;
+}
+
+export interface Test1ServiceImplementation<CallContextExt = {}> {
+  createOne(request: Test1CreateOneInput, context: CallContext & CallContextExt): Promise<DeepPartial<Test1>>;
+}
+
+export interface Test1ServiceClient<CallOptionsExt = {}> {
+  createOne(request: DeepPartial<Test1CreateOneInput>, options?: CallOptions & CallOptionsExt): Promise<Test1>;
+}
+
+export interface Test2ServiceImplementation<CallContextExt = {}> {
+  createOne(request: Test2CreateOneInput, context: CallContext & CallContextExt): Promise<DeepPartial<Test2>>;
+}
+
+export interface Test2ServiceClient<CallOptionsExt = {}> {
+  createOne(request: DeepPartial<Test2CreateOneInput>, options?: CallOptions & CallOptionsExt): Promise<Test2>;
+}"
+`;

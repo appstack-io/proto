@@ -1,14 +1,22 @@
 import { combineProtos } from '../combine-protos';
 import { generateInterfaces } from '../generate-interfaces';
+import * as fs from 'fs';
+import { generateGrpcClient } from '../generate-grpc-client';
 
 describe('generate-interfaces', () => {
   test('basic', async () => {
-    const combined = combineProtos([`${__dirname}/protos`], []);
-    const interfaces = generateInterfaces(combined);
-    expect(interfaces).toMatchInlineSnapshot(`
-      "import { Empty } from './google/protobuf/empty';
-
-      import { Observable } from 'rxjs';"
-    `);
+    combineProtos([`${__dirname}/protos`], []);
+    await generateGrpcClient(
+      `./node_modules`,
+      `src/tests/temp`,
+      `combined.proto`,
+      `combined.grpc.client.ts`,
+    );
+    const client = fs.readFileSync(
+      `${__dirname}/temp/combined.grpc.client.ts`,
+      'utf-8',
+    );
+    const interfaces = generateInterfaces(client);
+    expect(interfaces).toMatchSnapshot();
   });
 });

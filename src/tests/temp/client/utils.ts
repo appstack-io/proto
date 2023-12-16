@@ -1,4 +1,4 @@
-import * as clientLib from './combined.grpc';
+import * as clientLib from './combined.grpc.client';
 import { createChannel, createClient, Metadata } from 'nice-grpc';
 
 export async function postToUnary<T>(
