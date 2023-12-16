@@ -2,6 +2,13 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## 0.0.7 - 2023-12-13
+#### Bug Fixes
+- generateServiceProtos.ts - (35331b1) - orgal
+#### Miscellaneous Chores
+- bump version to 0.0.6 - (956e82e) - GitHub Action
+- - -
+
 ## 0.0.6 - 2023-12-09
 #### Bug Fixes
 - generateServiceProtos.ts - (72e3dd3) - orgal
