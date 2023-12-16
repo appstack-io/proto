@@ -14,7 +14,7 @@ const findProtoFiles = (
     const stat: fs.Stats = fs.statSync(filePath);
 
     if (stat.isDirectory()) {
-      findProtoFiles(filePath, fileList);
+      findProtoFiles(filePath, exclude, fileList);
     } else if (path.extname(file) === '.proto') {
       fileList.push(filePath);
     }
