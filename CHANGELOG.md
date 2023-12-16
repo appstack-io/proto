@@ -2,6 +2,19 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## 0.0.14 - 2023-12-16
+#### Bug Fixes
+- proto-build.ts - (f46ab63) - orgal
+- proto-build.ts - (861f371) - orgal
+- proto-build.ts - (71aa4c6) - orgal
+- proto-build.ts - (e5d4581) - orgal
+- proto-build.ts - (888d6a2) - orgal
+- proto-build.ts - (82a4610) - orgal
+- proto-build.ts - (1cbd846) - orgal
+#### Miscellaneous Chores
+- bump version to 0.0.13 - (7c85b79) - GitHub Action
+- - -
+
 ## 0.0.13 - 2023-12-16
 #### Bug Fixes
 - generate interfaces bug - (6150f8b) - orgal
