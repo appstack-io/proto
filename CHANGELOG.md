@@ -2,6 +2,13 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## 0.0.11 - 2023-12-16
+#### Bug Fixes
+- generate interfaces bug - (d75945b) - orgal
+#### Miscellaneous Chores
+- bump version to 0.0.10 - (806fba0) - GitHub Action
+- - -
+
 ## 0.0.10 - 2023-12-16
 #### Bug Fixes
 - combine bug - (2ce79d7) - orgal
