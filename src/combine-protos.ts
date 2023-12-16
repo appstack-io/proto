@@ -1,8 +1,12 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { consolidateProtos } from './consolidateProtos';
+import { consolidateProtos } from './consolidate-protos';
 
-const findProtoFiles = (dir: string, fileList: string[] = []): string[] => {
+const findProtoFiles = (
+  dir: string,
+  exclude: string[],
+  fileList: string[] = [],
+): string[] => {
   const files: string[] = fs.readdirSync(dir);
 
   files.forEach((file) => {
@@ -16,12 +20,18 @@ const findProtoFiles = (dir: string, fileList: string[] = []): string[] => {
     }
   });
 
-  return fileList.filter((file) => !file.includes('/tests/'));
+  return filterStrings(fileList, exclude);
 };
 
-export function combineProtos(sources: string[], target: string) {
+function filterStrings(strings: string[], exclude: string[]) {
+  return strings.filter(
+    (str: string) => !exclude.some((excl) => str.includes(excl)),
+  );
+}
+
+export function combineProtos(sources: string[], exclude: string[]) {
   const protoFiles: string[] = sources.reduce((acc, val) => {
-    acc.push(...findProtoFiles(val));
+    acc.push(...findProtoFiles(val, exclude));
     return acc;
   }, []);
 
@@ -63,6 +73,5 @@ export function combineProtos(sources: string[], target: string) {
     '\npackage main;\n\n' +
     consolidated;
 
-  // Write the final content to a file
-  fs.writeFileSync(target, finalContent, 'utf-8');
+  return finalContent;
 }

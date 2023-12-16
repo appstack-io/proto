@@ -1,7 +1,7 @@
 import * as fs from 'fs';
-import { combineProtos } from './combineProtos';
+import { combineProtos } from './combine-protos';
 
-export async function generateServiceProtos(dir: string) {
+export async function generateModuleProtos(dir: string, exclude: string[]) {
   const moduleFiles = fs
     .readdirSync(dir)
     .filter((file) => file.endsWith('.ts'))
@@ -13,6 +13,7 @@ export async function generateServiceProtos(dir: string) {
     const sourceDirs = imports
       .map((imp) => (imp['getDirname'] ? imp['getDirname']() : null))
       .filter((i) => i);
-    combineProtos(sourceDirs, `${file}.proto`);
+    const combined = combineProtos(sourceDirs, exclude);
+    fs.writeFileSync(`${file}.proto`, combined, 'utf-8');
   }
 }

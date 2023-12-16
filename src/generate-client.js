@@ -4,41 +4,16 @@ const parser = require('@babel/parser');
 const traverse = require('@babel/traverse').default;
 const t = require('@babel/types');
 const generator = require('@babel/generator').default;
+const { exec } = require('child_process');
 
-function generateClient(source, target) {
-  const sourceFilePath = source; // Path to your definitions file
-  const outputFolderPath = target; // Folder where the generated classes will be placed
-
-  function copyDirSync(src, dest) {
-    try {
-      // Check if the destination directory exists, if not create it
-      fs.mkdirSync(dest, { recursive: true });
-
-      // Read the contents of the source directory
-      let entries = fs.readdirSync(src, { withFileTypes: true });
-
-      for (let entry of entries) {
-        let srcPath = fsPath.join(src, entry.name);
-        let destPath = fsPath.join(dest, entry.name);
-
-        // Check if the entry is a directory or a file
-        entry.isDirectory()
-          ? copyDirSync(srcPath, destPath) // Recurse for directories
-          : fs.copyFileSync(srcPath, destPath); // Copy file
-      }
-    } catch (err) {
-      console.error('Error copying directory:', err);
-      throw err;
-    }
-  }
-
+export function generateClient(sourceTs, targetDir) {
   // Ensure the output directory exists
-  if (!fs.existsSync(outputFolderPath)) {
-    fs.mkdirSync(outputFolderPath, { recursive: true });
+  if (!fs.existsSync(targetDir)) {
+    fs.mkdirSync(targetDir, { recursive: true });
   }
 
   // Read the source file containing the service definitions and type interfaces
-  const code = fs.readFileSync(sourceFilePath, 'utf-8');
+  const code = fs.readFileSync(sourceTs, 'utf-8');
 
   // Parse the code into an AST (Abstract Syntax Tree)
   const ast = parser.parse(code, {
@@ -87,19 +62,28 @@ function generateClient(source, target) {
   };
 
   // Generate the utility file (utils.ts)
-  const utilsContent = `import axios from 'axios';
+  const utilsContent = `import * as clientLib from './${fsPath
+    .basename(sourceTs)
+    .replace('.ts', '')}';
+import { createChannel, createClient, Metadata } from 'nice-grpc';
 
-export async function postToUnary<T>(serviceName: string, methodName: string, data: any): Promise<T> {
-  const response = await axios.post('http://localhost:3000/gateway/unary', {
-    service: serviceName,
-    method: methodName,
-    data,
-  },{ withCredentials: true });
-  return response.data;
+export async function postToUnary<T>(
+  serviceName: string,
+  methodName: string,
+  data: any,
+  metadata: Metadata,
+  opts?: {port?: string, host?: string}
+): Promise<T> {
+  const definition = clientLib[\`\${serviceName}Definition\`];
+  const host = serviceName.toLowerCase().replace('service', '');
+  const channel = createChannel(\`\${opts?.host || host}:\${opts?.port || process.env.ASIO_MS_PORT}\`);
+  const client = createClient(definition, channel);
+  const result = await client[methodName](data, { metadata });
+  return result;
 }
 `;
 
-  fs.writeFileSync(`${outputFolderPath}/utils.ts`, utilsContent);
+  fs.writeFileSync(`${targetDir}/utils.ts`, utilsContent);
 
   // Keep track of all the service names
   let serviceNames = [];
@@ -108,21 +92,26 @@ export async function postToUnary<T>(serviceName: string, methodName: string, da
   const generateServiceClass = (serviceName, methods, types) => {
     const methodStrings = methods.map(
       (method) => `
-    async ${method.name}(data: Partial<${method.requestType}>): Promise<${method.responseType}> {
-      return postToUnary<${method.responseType}>(this.serviceName, '${method.name}', data);
+    async ${method.name}(data: Partial<${method.requestType}>, metadata: Metadata=new Metadata()): Promise<${method.responseType}> {
+      return postToUnary<${method.responseType}>(this.serviceName, '${method.name}', data, metadata, this.opts);
     }
   `,
     );
 
     const interfaceDefinitions = generateInterfaces(types, ast);
 
-    let result = `${interfaceDefinitions}\n\nimport { postToUnary } from './utils';
-
-export class ${serviceName} {
-  private readonly serviceName: string = "${serviceName}";
-  
-  ${methodStrings.join('')}
-}
+    let result = `
+  ${interfaceDefinitions}
+  import { postToUnary } from './utils';
+  import { Metadata } from 'nice-grpc';
+ 
+  export class ${serviceName} {
+    private readonly serviceName: string = "${serviceName}";
+    
+    constructor(private opts?: {port?: string, host?: string}){}
+    
+    ${methodStrings.join('')}
+  }
 `;
     if (result.indexOf('Empty') > -1) {
       result = `import { Empty } from './google/protobuf/empty';\n${result}`;
@@ -159,17 +148,17 @@ export class ${serviceName} {
       ]);
 
       const classContent = generateServiceClass(serviceName, methods, types);
-      fs.writeFileSync(`${outputFolderPath}/${serviceName}.ts`, classContent);
+      fs.writeFileSync(`${targetDir}/${serviceName}.ts`, classContent);
     },
   });
+
+  exec(`cp -r ${fsPath.dirname(sourceTs)}/google ${targetDir}`);
+  exec(`cp ${sourceTs} ${targetDir}`);
 
   // Generate the index file
   const indexContent = [...serviceNames, `google/protobuf/empty`]
     .map((ex) => `export * from './${ex}';`)
+    .concat(`export { Metadata } from 'nice-grpc';`)
     .join('\n');
-  fs.writeFileSync(`${outputFolderPath}/index.ts`, indexContent);
-  copyDirSync(`${__dirname}/google`, `${outputFolderPath}/google`);
-  console.log('Service classes and index file generated.');
+  fs.writeFileSync(`${targetDir}/index.ts`, indexContent);
 }
-
-module.exports = { generateClient };
