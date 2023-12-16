@@ -5,6 +5,15 @@ exports[`generate-interfaces basic 1`] = `
 
 import { Observable } from 'rxjs';
 
+import type { CallContext, CallOptions, CallOptionsExt } from "nice-grpc-common";
+
+type DeepPartial<T> = T extends Builtin ? T
+      : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>>
+      : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
+      : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
+      : Partial<T>;
+    
+
 export interface Test1 {
   id: string;
   createdAt: number;
