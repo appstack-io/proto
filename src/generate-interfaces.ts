@@ -3,7 +3,8 @@ export function generateInterfaces(source: string) {
   const imports: string[] = [
     `import { Empty } from './google/protobuf/empty';`,
     `import { Observable } from 'rxjs';`,
-    `import type { CallContext, CallOptions, CallOptionsExt } from "nice-grpc-common";`,
+    `import type { CallContext, CallOptions } from "nice-grpc-common";`,
+    `type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;`,
     `type DeepPartial<T> = T extends Builtin ? T
       : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>>
       : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
