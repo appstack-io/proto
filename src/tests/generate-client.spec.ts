@@ -5,7 +5,7 @@ import { generateGrpcClient } from '../generate-grpc-client';
 
 describe('generate-client', () => {
   test('basic', async () => {
-    const combined = combineProtos([`${__dirname}/protos`], []);
+    const combined = combineProtos([`${__dirname}`], []);
     fs.writeFileSync(`${__dirname}/temp/combined.proto`, combined, 'utf-8');
     await generateGrpcClient(
       `./node_modules`,

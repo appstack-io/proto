@@ -5,3 +5,4 @@ export * from './generate-client';
 export * from './generate-grpc-client';
 export * from './generate-module-protos';
 export * from './fetch-protos';
+export * from './proto-build';

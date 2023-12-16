@@ -2,7 +2,7 @@ import { combineProtos } from '../combine-protos';
 
 describe('combine-protos', () => {
   test('basic', async () => {
-    const combined = combineProtos([`${__dirname}/protos`], []);
+    const combined = combineProtos([`${__dirname}`], []);
     expect(combined).toMatchSnapshot();
   });
 });

@@ -5,7 +5,7 @@ import { generateGrpcClient } from '../generate-grpc-client';
 
 describe('generate-interfaces', () => {
   test('basic', async () => {
-    combineProtos([`${__dirname}/protos`], []);
+    combineProtos([`${__dirname}`], []);
     await generateGrpcClient(
       `./node_modules`,
       `src/tests/temp`,
