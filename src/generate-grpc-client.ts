@@ -27,6 +27,6 @@ export async function generateGrpcClient(
     recursive: true,
   });
   const generated = fs.readFileSync(`${workDir}/${targetTs}`, 'utf8');
-  const cleaned = generated.replace(/from '.*\/google/g, `from './google/`);
+  const cleaned = generated.replace(/from ".*\/google/g, `from "./google/`);
   fs.writeFileSync(`${workDir}/${targetTs}`, cleaned);
 }
