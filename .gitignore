@@ -132,8 +132,3 @@ dist
 **/.DS_Store
 
 .idea
-/src/tests/temp/client/
-/src/tests/temp/google/
-/src/tests/temp/combined.grpc.client.ts
-/src/tests/temp/combined.interfaces.ts
-/src/tests/temp/combined.proto
