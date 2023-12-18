@@ -6,3 +6,4 @@ export * from './generate-grpc-client';
 export * from './generate-module-protos';
 export * from './fetch-protos';
 export * from './proto-build';
+export * from './generate-host-mappings';
