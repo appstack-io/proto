@@ -38,10 +38,7 @@ export async function fetchProtos(
       const { repository, branch } = service;
       const url = `https://raw.githubusercontent.com/${repository}/${branch}/src/combined.proto`;
       fs.mkdirSync(`${target}/fetched-protos/${key}`, { recursive: true });
-      return downloadFile(
-        url,
-        `${target}/fetched-protos/${key}/combined.proto`,
-      );
+      return downloadFile(url, `${target}/fetched-protos/${key}/fetched.proto`);
     }),
   );
 }
