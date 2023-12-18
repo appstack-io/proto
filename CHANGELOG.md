@@ -2,6 +2,15 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## 0.0.19 - 2023-12-18
+#### Bug Fixes
+- hostMappings - (f9cadda) - orgal
+- hostMappings - (6844e8e) - orgal
+- hostMappings - (5ae39e9) - orgal
+#### Miscellaneous Chores
+- bump version to 0.0.18 - (96a34d5) - GitHub Action
+- - -
+
 ## 0.0.18 - 2023-12-18
 #### Bug Fixes
 - fetch protos - (e95cf9b) - orgal
