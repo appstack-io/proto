@@ -1,4 +1,4 @@
-import fs from 'fs';
+import * as fs from 'fs';
 import https from 'https';
 
 function downloadFile(url: string, dest: string): Promise<void> {
