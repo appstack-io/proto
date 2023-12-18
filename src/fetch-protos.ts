@@ -1,5 +1,5 @@
 import * as fs from 'fs';
-import https from 'https';
+import * as https from 'https';
 
 function downloadFile(url: string, dest: string): Promise<void> {
   return new Promise((resolve, reject) => {
