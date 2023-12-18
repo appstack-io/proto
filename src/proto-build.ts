@@ -11,6 +11,7 @@ export async function protoBuild(opts: {
   exclude: string[];
   combinedName: string;
   clientDir: string;
+  hostMappings: Record<string, string>;
 }) {
   const combined = combineProtos(
     [`${opts.projectDir}/${opts.protoDir}`],
@@ -43,6 +44,7 @@ export async function protoBuild(opts: {
   generateClient(
     `${opts.projectDir}/${opts.protoDir}/${opts.combinedName}.grpc.client.ts`,
     `${opts.projectDir}/${opts.protoDir}/${opts.clientDir}`,
+    opts.hostMappings,
   );
 
   exec(`cp -r ${__dirname}/google ${opts.projectDir}/${opts.protoDir}`);

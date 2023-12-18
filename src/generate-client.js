@@ -6,7 +6,7 @@ const t = require('@babel/types');
 const generator = require('@babel/generator').default;
 const { exec } = require('child_process');
 
-export function generateClient(sourceTs, targetDir) {
+export function generateClient(sourceTs, targetDir, hostMappings) {
   // Ensure the output directory exists
   if (!fs.existsSync(targetDir)) {
     fs.mkdirSync(targetDir, { recursive: true });
@@ -66,6 +66,7 @@ export function generateClient(sourceTs, targetDir) {
     .basename(sourceTs)
     .replace('.ts', '')}';
 import { createChannel, createClient, Metadata } from 'nice-grpc';
+const hostMappings=${JSON.stringify(hostMappings)};
 
 export async function postToUnary<T>(
   serviceName: string,
@@ -75,7 +76,8 @@ export async function postToUnary<T>(
   opts?: {port?: string, host?: string}
 ): Promise<T> {
   const definition = clientLib[\`\${serviceName}Definition\`];
-  const host = serviceName.toLowerCase().replace('service', '');
+  const service = serviceName.toLowerCase().replace('service', '');
+  const host = hostMappings[service] || service;
   const channel = createChannel(\`\${opts?.host || host}:\${opts?.port || process.env.ASIO_MS_PORT}\`);
   const client = createClient(definition, channel);
   const result = await client[methodName](data, { metadata });

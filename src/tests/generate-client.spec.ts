@@ -16,6 +16,7 @@ describe('generate-client', () => {
     generateClient(
       `${__dirname}/temp/combined.grpc.client.ts`,
       `${__dirname}/temp/client`,
+      {},
     );
   });
 });

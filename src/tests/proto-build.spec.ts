@@ -8,6 +8,7 @@ describe('proto-build', () => {
       exclude: [],
       combinedName: 'combined',
       clientDir: 'client',
+      hostMappings: { test1: 'dummy', test2: 'dummy' },
     });
   });
 });
