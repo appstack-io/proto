@@ -2,6 +2,13 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## 0.0.16 - 2023-12-18
+#### Bug Fixes
+- fetch protos - (5890a81) - orgal
+#### Miscellaneous Chores
+- bump version to 0.0.15 - (60fb2a8) - GitHub Action
+- - -
+
 ## 0.0.15 - 2023-12-16
 #### Bug Fixes
 - proto-build.ts - (582f727) - orgal
