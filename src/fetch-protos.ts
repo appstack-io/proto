@@ -29,15 +29,19 @@ function downloadFile(url: string, dest: string): Promise<void> {
 }
 
 export async function fetchProtos(
-  services: { repository: string; branch: string }[],
+  services: Record<string, { repository: string; branch: string }>,
+  target: string,
 ) {
   await Promise.all(
     Object.keys(services).map((key) => {
       const service = services[key];
       const { repository, branch } = service;
       const url = `https://raw.githubusercontent.com/${repository}/${branch}/src/combined.proto`;
-      fs.mkdirSync(`${__dirname}/temp/${key}`, { recursive: true });
-      return downloadFile(url, `${__dirname}/temp/${key}/combined.proto`);
+      fs.mkdirSync(`${target}/fetched-protos/${key}`, { recursive: true });
+      return downloadFile(
+        url,
+        `${target}/fetched-protos/${key}/combined.proto`,
+      );
     }),
   );
 }
