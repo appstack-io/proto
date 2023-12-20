@@ -33,7 +33,7 @@ export async function fetchProtos(
   await Promise.all(
     Object.keys(services).map(async (key) => {
       const service = services[key];
-      const { repository, branch } = service;
+      const { repository } = service;
       fs.mkdirSync(`${target}/fetched-protos/${key}`, { recursive: true });
       return await downloadFile(
         repository,
